@@ -502,26 +502,26 @@ const SampleType = (props) => {
               disallowFutureDate={true}
             />
 
-            <CustomTimePicker
-              id={"collectionTime_" + index}
-              autofillTime={
-                configurationProperties?.AUTOFILL_COLLECTION_DATE === "true"
-              }
-              onChange={(time) => handleCollectionTime(time)}
-              value={sampleXml.collectionTime}
-              className="inputText"
-              labelText={intl.formatMessage({ id: "sample.collection.time" })}
-            />
-            <CustomTextInput
-              id={"collector_" + index}
-              onChange={(value) => handleCollector(value)}
-              defaultValue={""}
-              value={sampleXml.collector}
-              labelText={intl.formatMessage({ id: "collector.label" })}
-              className="inputText"
-            />
+          <CustomTimePicker
+            id={"collectionTime_" + index}
+            autofillTime={
+              configurationProperties?.AUTOFILL_COLLECTION_DATE === "true"
+            }
+            onChange={(time) => handleCollectionTime(time)}
+            value={sampleXml.collectionTime}
+            className="inputText"
+            labelText={intl.formatMessage({ id: "sample.collection.time" })}
+          />
+          <CustomTextInput
+            id={"collector_" + index}
+            onChange={(value) => handleCollector(value)}
+            defaultValue={""}
+            value={sampleXml.collector}
+            labelText={intl.formatMessage({ id: "collector.label" })}
+            className="inputText"
+          />
           </Column>
-        </Grid>
+         </Grid>
         <div className="testPanels">
           <div className="cds--col">
             <h4>
