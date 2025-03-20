@@ -60,6 +60,13 @@ function CreatePatientForm(props) {
     months: "",
     days: "",
   });
+  const [phoneNumber, setPhoneNumber] = useState(
+    props.selectedPatient.phoneNumber,
+  );
+  const handlePhoneNumberChange = (event) => {
+    const newValue = event.target.value;
+    setPhoneNumber(newValue);
+  };
   const [nationalId, setNationalId] = useState(
     props.selectedPatient.nationalId,
   );
@@ -353,6 +360,19 @@ function CreatePatientForm(props) {
     }
     return error;
   };
+  const accessionValidationResponse = () => {
+    let error;
+
+    setNotificationVisible(true);
+    addNotification({
+      kind: NotificationKinds.error,
+      title: intl.formatMessage({ id: "notification.title" }),
+      message: "Not a valid phone number",
+    });
+    error = "invalid";
+
+    return error;
+  };
 
   const handleSubjectNoValidation = async (
     numberType,
@@ -366,6 +386,13 @@ function CreatePatientForm(props) {
         (response) =>
           accessionNumberValidationResponse(response, numberType, numberValue),
       );
+    }
+    return error;
+  };
+  const handleSubjectPhone = async (numberValue) => {
+    let error;
+    if (!validatePhone(numberValue)) {
+      accessionValidationResponse();
     }
     return error;
   };
@@ -385,7 +412,11 @@ function CreatePatientForm(props) {
   const fetchHeathDistricts = (districts) => {
     setHealthDistricts(districts);
   };
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\+?(\d{1,3})?[-.\s]?(\d{3})[-.\s]?(\d{4})$/;
 
+    return phoneRegex.test(phone);
+  };
   const handleSubmit = async (values, { resetForm }) => {
     // Prevent multiple submissions.
     if (isSubmitting) {
@@ -626,12 +657,19 @@ function CreatePatientForm(props) {
                       id={field.name}
                       invalid={errors.primaryPhone && touched.primaryPhone}
                       invalidText={errors.primaryPhone}
+                      onMouseOut={() => {
+                        handleSubjectPhone(values.primaryPhone);
+                      }}
                       placeholder={intl.formatMessage({
                         id: "patient.information.primaryphone",
                       })}
+                      onChange={(e) => handlePhoneNumberChange(e)}
                     />
                   )}
                 </Field>
+                <div className="error">
+                  <ErrorMessage name="primaryPhone"></ErrorMessage>
+                </div>
               </Column>
               <Column lg={8} md={4} sm={4}>
                 <Field name="gender">
